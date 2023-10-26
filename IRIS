@@ -1,0 +1,38 @@
+# Import necessary libraries
+import numpy as np
+import pandas as pd
+from sklearn import datasets
+from sklearn.model_selection import train_test_split
+
+
+# Load the Iris dataset
+iris = datasets.load_iris()
+X = iris.data  # Features
+y = iris.target  # Target (species)
+
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+# Standardize features (optional, but often improves model performance)
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+# Create and train a k-Nearest Neighbors (k-NN) classifier
+k = 3  # You can choose the number of neighbors
+knn = KNeighborsClassifier(n_neighbors=k)
+knn.fit(X_train, y_train)
+
+# Make predictions on the test set
+y_pred = knn.predict(X_test)
+
+# Evaluate the model
+print("Confusion Matrix:")
+print(confusion_matrix(y_test, y_pred))
+
+print("\nClassification Report:")
+print(classification_report(y_test, y_pred))
+
+accuracy = accuracy_score(y_test, y_pred)
+print(f"\nAccuracy: {accuracy * 100:.2f}%")
